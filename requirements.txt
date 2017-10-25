@@ -1,0 +1,5 @@
+requests==2.18.4
+pypandoc==1.4
+Fabric==1.14.0
+mock==2.0.0
+Django=1.10
