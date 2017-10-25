@@ -28,7 +28,6 @@ def get_package_data(package):
     walk = [(dirpath.replace(package + os.sep, '', 1), filenames)
             for dirpath, dirnames, filenames in os.walk(package)
             if not os.path.exists(os.path.join(dirpath, '__init__.py'))]
-    print walk
     filepaths = []
     for base, filenames in walk:
         filepaths.extend([os.path.join(base, filename)
@@ -54,7 +53,6 @@ setup(
     license='BSD',
     url='https://github.com/KokocGroup/django_selectel',
     packages=get_packages('django_selectel'),
-    package_data=get_package_data('django_selectel'),
     author='KokocGroup',
     author_email='dev@kokoc.com',
     install_requires=[
