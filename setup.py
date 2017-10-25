@@ -49,7 +49,7 @@ setup(
     description="The file store in the Selectel cloud store for Django",
     long_description=read_md('README.md'),
     version=version,
-    ownload_url='https://github.com/KokocGroup/django_selectel/tarball/v{}'.format(version),
+    download_url='https://github.com/KokocGroup/django_selectel/tarball/v{}'.format(version),
     license='BSD',
     url='https://github.com/KokocGroup/django_selectel',
     packages=get_packages('django_selectel'),
