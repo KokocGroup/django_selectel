@@ -6,9 +6,12 @@ The file store in the [Selectel cloud store](https://selectel.ru/services/cloud/
 
 Storage and CDN creation
 -------------
-Log in to your personal [account](https://my.selectel.ru/login/) in Selectel.
-Create a [new user](https://my.selectel.ru/storage/users) to work with the store.
-[Create a new](https://my.selectel.ru/storage/containers) private or public container.
+ - Log in to your personal [account](https://my.selectel.ru/login/) in
+   Selectel. 
+ - Create a [new user](https://my.selectel.ru/storage/users)
+   to work with the store.
+ - [Create a new](https://my.selectel.ru/storage/containers) private or public
+   container.
 
 Installation
 -------------
