@@ -1,5 +1,5 @@
 __title__ = 'Django Selectel'
-__version__ = "1.0.14"
+__version__ = "1.0.15"
 __author__ = 'KokocGroup'
 __license__ = 'BSD 2-Clause'
 
