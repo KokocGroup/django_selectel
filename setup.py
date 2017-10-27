@@ -15,7 +15,7 @@ except ImportError:
     print("warning: pypandoc module not found, could not convert Markdown to RST")
 
     def read_md(f):
-        return open(f, 'r', encoding='utf-8').read()
+        return open(f, 'r').read()
 
 
 def get_packages(package):
