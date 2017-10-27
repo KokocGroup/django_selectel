@@ -15,6 +15,7 @@ except ImportError:
     def read_md(f):
         return open(f, 'r').read()
 
+
 def get_packages(package):
     return [dirpath.replace(os.path.sep, ".")
             for dirpath, dirnames, filenames in os.walk(package)
@@ -37,8 +38,6 @@ def get_version(package):
     init_py = open(os.path.join(package, '__init__.py')).read()
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
-print get_packages('django_selectel')
-raise
 
 version = get_version('django_selectel')
 
