@@ -71,6 +71,7 @@ class ApiStorage(Storage):
 
     def url(self, name):
         container, path = self._parse_path(name)
+        print container
         if settings.SELECTEL_STORAGE.get('DOMAINS', {}).get(container):
             return os.path.join(settings.SELECTEL_STORAGE["DOMAINS"][container], path)
         return self._api.get_url(container, path)

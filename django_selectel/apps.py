@@ -5,5 +5,5 @@ from django import apps as django_apps
 
 
 class SelectelCDNConfig(django_apps.AppConfig):
-    name = "SelectelCDN"
+    name = "django_selectel"
     verbose_name = "Selectel CDN"
