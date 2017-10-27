@@ -1,17 +1,15 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
-import os
-
 import gzip
-
+import os
 from cStringIO import StringIO
 
 from django.core.files import File
 from django.core.files.storage import Storage
+from django.utils.deconstruct import deconstructible
 from django.utils.functional import cached_property
 from django_selectel import settings
-
 from django_selectel.api import SelectelCDNApi
 
 
@@ -19,9 +17,10 @@ class ApiStorageException(Exception):
     pass
 
 
+@deconstructible
 class ApiStorage(Storage):
 
-    def __init__(self, user=None, password=None, domains=None, override_files=None, use_gz=None):
+    def __init__(self, user=None, password=None, domains=None, overwrite_files=None, use_gz=None):
 
         self.user = user or settings.SELECTEL_STORAGE.get("USER")
 
@@ -35,7 +34,7 @@ class ApiStorage(Storage):
 
         self.domains = domains if domains is not None else settings.SELECTEL_STORAGE.get('DOMAINS', {})
 
-        self.override_files = override_files if override_files is not None else settings.SELECTEL_STORAGE.get("OVERRIDE_FILES", False)
+        self.overwrite_files = overwrite_files if overwrite_files is not None else settings.SELECTEL_STORAGE.get("OVERRIDE_FILES", False)
         self.use_gz = use_gz if use_gz is not None else settings.SELECTEL_STORAGE.get("USE_GZ", False)
 
         self._api = SelectelCDNApi(
@@ -48,7 +47,7 @@ class ApiStorage(Storage):
         )
 
     def get_available_name(self, name, max_length=None):
-        if not self.override_files:
+        if not self.overwrite_files:
             return super(ApiStorage, self).get_available_name(name, max_length)
         return name
 

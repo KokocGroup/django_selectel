@@ -14,7 +14,7 @@ SELECTEL_STORAGE = {
     "USER": None,
     "PASSWORD": None,
     "DOMAINS": {},
-    "OVERRIDE_FILES": False,
+    "OVERWRITE_FILES": False,
     "USE_GZ": False,
     "AUTH_URL": "https://auth.selcdn.ru/",
     "API_THRESHOLD": 30 * 60,
