@@ -16,7 +16,7 @@ except ImportError:
         return open(f, 'r').read()
 
 def get_packages(package):
-    return [dirpath
+    return [dirpath.replace(os.path.sep, ".")
             for dirpath, dirnames, filenames in os.walk(package)
             if os.path.exists(os.path.join(dirpath, '__init__.py'))]
 
