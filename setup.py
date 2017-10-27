@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 import re
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 try:
     from pypandoc import convert
@@ -12,11 +12,11 @@ try:
     def read_md(f):
         return convert(f, 'rst')
 except ImportError:
-    print("warning: pypandoc module not found, could not convert Markdown to RST")
-
     def read_md(f):
         return open(f, 'r').read()
 
+print find_packages()
+raise
 
 def get_packages(package):
     return [dirpath
