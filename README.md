@@ -4,17 +4,14 @@ django_selectel
 
 The file store in the [Selectel cloud store](https://selectel.ru/services/cloud/storage/) for Django
 
-[TOC]
-
 Storage and CDN creation
 -------------
-Log in to your personal [account](https://my.selectel.ru/login/) in Selectel
-Create a [new user](https://my.selectel.ru/storage/users) to work with the store
-[Create a new](https://my.selectel.ru/storage/containers) private or public container
+Log in to your personal [account](https://my.selectel.ru/login/) in Selectel.
+Create a [new user](https://my.selectel.ru/storage/users) to work with the store.
+[Create a new](https://my.selectel.ru/storage/containers) private or public container.
+
 Installation
 -------------
-
-
 Install using `pip`...
 
     pip install django_selectel
@@ -22,37 +19,37 @@ Install using `pip`...
 In `settings.py` add the following:
 
     INSTALLED_APPS = (
-        ...
-        'django_selectel',
-    )
+	    ...
+	    'django_selectel',
+	)
 
 Settings
 -------------------
 All settings are optional, you can specify them when initializing the storage class
 
     SELECTEL_STORAGE = {
-        "USER": "",
-        "PASSWORD": "",
-        "DOMAINS": {},
-        "OVERWRITE_FILES": False,
-        "USE_GZ": False,
-        "AUTH_URL": "https://auth.selcdn.ru/",
-        "API_THRESHOLD": 30 * 60,
-        "API_MAX_RETRY": 3,
-        "API_RETRY_DELAY": 0.1
-    }
-    
-    # or
-    
-    from django_selectel.storages import ApiStorage
-    
-    cdn_storage = ApiStorage(
-        user="",
-        password="",
-        domains={},
-        use_gz=False,
-        overwrite_files=False
-    )
+	    "USER": "",
+	    "PASSWORD": "",
+	    "DOMAINS": {},
+	    "OVERWRITE_FILES": False,
+	    "USE_GZ": False,
+	    "AUTH_URL": "https://auth.selcdn.ru/",
+	    "API_THRESHOLD": 30 * 60,
+	    "API_MAX_RETRY": 3,
+	    "API_RETRY_DELAY": 0.1
+	}
+	
+	# or
+	
+	from django_selectel.storages import ApiStorage
+	
+	cdn_storage = ApiStorage(
+		user="",
+		password="",
+		domains={},
+		use_gz=False,
+		overwrite_files=False
+	)
 
 #### **USER**
 The username of the storage that is available
@@ -67,7 +64,7 @@ Associate a domain with a specific container. You can bind the domain in the con
 Example:
 
     "DOMAINS": {
-        "my_public_container": "https://cdn.mysite.com"
+	    "my_public_container": "https://cdn.mysite.com"
     }
 
 #### **OVERWRITE_FILES**
@@ -100,9 +97,9 @@ Using
 In `settings.py` add the following:
 
     SELECTEL_STORAGE = {
-        "USER": "MyUserName",
-        "PASSWORD": "MyPassword",
-    }
+	    "USER": "MyUserName",
+	    "PASSWORD": "MyPassword",
+	}
 The remaining settings can be omitted, because are not required, they will be used as default values if they are not passed as a class parameter
 
 Create a model with a file field that will work with the cloud-based file system
@@ -110,23 +107,23 @@ Create a model with a file field that will work with the cloud-based file system
     from django.db import models
     from django_selectel.storages import ApiStorage
     from django.core.files.base import ContentFile
-    
-    class Image(models.Model):
-        ...
-        # for a public container
-        file = models.FileField(upload_to='my_public_container', storage=ApiStorage()) 
-        # for a private container
-        file = models.FileField(upload_to='my_private_contrainer', storage=ApiStorage(use_gz=True))
-    
-    with open("my_image.jpg") as fh:
-        Image.objects.create(
-            ...
-            file=fh
-        )
-    image = Image.objects.first()
-    print image.file.read()
-    print image.size
-    image.file.delete()
+	
+	class Image(models.Model):
+		...
+		# for a public container
+		file = models.FileField(upload_to='my_public_container', storage=ApiStorage()) 
+		# for a private container
+		file = models.FileField(upload_to='my_private_contrainer', storage=ApiStorage(use_gz=True))
+	
+	with open("my_image.jpg") as fh:
+		Image.objects.create(
+			...
+			file=fh
+		)
+	image = Image.objects.first()
+	print image.file.read()
+	print image.size
+	image.file.delete()
 
 The first directory in the upload_to path describes which container the record will be written to. So you can use an unlimited number of containers.
 You can specify a function that will return the path
@@ -138,6 +135,6 @@ You can specify a function that will return the path
     def image_upload_to(instance, filename):
         return "my_container/{:%Y-%m-%d}/{}".format(date.today(), filename)
 
-    class Image(models.Model):
-        ...
-        file = models.FileField(upload_to=image_upload_to, storage=ApiStorage())
+	class Image(models.Model):
+		...
+		file = models.FileField(upload_to=image_upload_to, storage=ApiStorage())
