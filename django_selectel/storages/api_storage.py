@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import gzip
 import os
-from cStringIO import StringIO
 
 from django.core.files import File
 from django.core.files.storage import Storage
@@ -11,6 +10,13 @@ from django.utils.deconstruct import deconstructible
 from django.utils.functional import cached_property
 from django_selectel import settings
 from django_selectel.api import SelectelCDNApi
+from django_selectel import utils
+
+
+if utils.is_py3():
+    from io import StringIO, BytesIO
+else:
+    from StringIO import StringIO
 
 
 class ApiStorageException(Exception):
@@ -70,7 +76,6 @@ class ApiStorage(Storage):
 
     def url(self, name):
         container, path = self._parse_path(name)
-        print container
         if settings.SELECTEL_STORAGE.get('DOMAINS', {}).get(container):
             return os.path.join(settings.SELECTEL_STORAGE["DOMAINS"][container], path)
         return self._api.get_url(container, path)
@@ -92,7 +97,6 @@ class ApiStorage(Storage):
             file_content = g_file.getvalue()
         else:
             file_content = content.read()
-
         self._api.put(container, path, file_content)
         return name
 
@@ -139,7 +143,11 @@ class SelectelCDNFile(File):
                 content_obj = StringIO(content)
                 content_obj.seek(0)
                 content = gzip.GzipFile(fileobj=content_obj, mode='rb').read()
-            self._file = StringIO(content)
+            if utils.is_py3() and isinstance(content, bytes):
+                self._file = BytesIO(content)
+            else:
+                self._file = StringIO(content)
+            
             self._file.seek(0)
         return self._file
 
