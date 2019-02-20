@@ -5,6 +5,7 @@ import hashlib
 import logging
 import os
 import time
+import utils
 
 from datetime import datetime
 from datetime import timedelta
@@ -148,8 +149,11 @@ class SelectelCDNApi(object):
         url = os.path.join(self._storage_url, container, path)
         if headers is None:
             headers = {}
-
-        headers["ETag"] = hashlib.md5(content).hexdigest()
+        if utils.is_py3():
+             etag = hashlib.md5(content.encode('utf8') if hasattr(content, 'encode') else content).hexdigest()
+        else:
+            etag = hashlib.md5(content).hexdigest()
+        headers["ETag"] = etag
         r = self._session.put(url, data=content, headers=headers, verify=True)
         self.logger.info("Request PUT {} - {}: {}".format(url, r.status_code, r.content))
         try:
