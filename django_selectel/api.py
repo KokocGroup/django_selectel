@@ -5,13 +5,12 @@ import hashlib
 import logging
 import os
 import time
-import utils
-
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from functools import wraps
 
 import requests
+
+from django_selectel import utils
 
 
 class SelectelCDNApiException(Exception):
