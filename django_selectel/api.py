@@ -153,6 +153,8 @@ class SelectelCDNApi(object):
         else:
             etag = hashlib.md5(content).hexdigest()
         headers["ETag"] = etag
+        if hasattr(content, 'encode'):
+            content = content.encode('utf-8')
         r = self._session.put(url, data=content, headers=headers, verify=True)
         self.logger.info("Request PUT {} - {}: {}".format(url, r.status_code, r.content))
         try:
