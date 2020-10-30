@@ -43,7 +43,6 @@ version = get_version('django_selectel')
 setup(
     name='django_selectel',
     description="The file store in the Selectel cloud store for Django",
-    long_description=read_md('README.md'),
     version=version,
     download_url='https://github.com/KokocGroup/django_selectel/tarball/v{}'.format(version),
     license='BSD',
