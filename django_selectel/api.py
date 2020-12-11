@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 import requests
+from requests import HTTPError
 
 from django_selectel import utils
 
@@ -108,7 +109,7 @@ class SelectelCDNApi(object):
         self.logger.info("Request GET {} - {}".format(url, response.status_code))
         try:
             response.raise_for_status()
-        except Exception as e:
+        except HTTPError as e:
             raise SelectelCDNApiException("Error get file {}: {}".format(url, str(e)), response=response)
         return response.content
 
@@ -122,7 +123,7 @@ class SelectelCDNApi(object):
         self.logger.info("Request GET_STEAM {} - {}".format(url, r.status_code))
         try:
             r.raise_for_status()
-        except Exception as e:
+        except HTTPError as e:
             raise SelectelCDNApiException("Error get file {}: {}".format(url, str(e)), response=r)
         return r.iter_content(chunk_size=chunk)
 
@@ -138,8 +139,9 @@ class SelectelCDNApi(object):
         try:
             r.raise_for_status()
             assert r.status_code == 204
-        except Exception as e:
-            raise SelectelCDNApiException("Error remove file {}: {}".format(url, str(e)), response=r)
+        except HTTPError as e:
+            if e.response.status_code != 404:
+                raise SelectelCDNApiException("Error remove file {}: {}".format(url, str(e)), response=r)
         return r.headers
 
     @attempts
@@ -149,7 +151,7 @@ class SelectelCDNApi(object):
         if headers is None:
             headers = {}
         if utils.is_py3():
-             etag = hashlib.md5(content.encode('utf8') if hasattr(content, 'encode') else content).hexdigest()
+            etag = hashlib.md5(content.encode('utf8') if hasattr(content, 'encode') else content).hexdigest()
         else:
             etag = hashlib.md5(content).hexdigest()
         headers["ETag"] = etag
@@ -160,7 +162,7 @@ class SelectelCDNApi(object):
         try:
             r.raise_for_status()
             assert r.status_code == 201
-        except Exception as e:
+        except HTTPError as e:
             raise SelectelCDNApiException("Error create file {}: {}".format(url, str(e)), response=r)
         return True
 
