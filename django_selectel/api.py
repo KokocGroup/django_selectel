@@ -162,6 +162,8 @@ class SelectelCDNApi(object):
         try:
             r.raise_for_status()
             assert r.status_code == 201
+            if not self.exist(container, path):
+                raise SelectelCDNApiException("Error checking file exist after PUT {}".format(url), response=r)
         except HTTPError as e:
             raise SelectelCDNApiException("Error create file {}: {}".format(url, str(e)), response=r)
         return True
